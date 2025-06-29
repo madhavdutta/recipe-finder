@@ -1,14 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
-import { Search, Filter, X } from 'lucide-react'
+import { Search, SlidersHorizontal } from 'lucide-react'
+import PandaIcon from './PandaIcon'
 
 const SearchBar = ({ searchQuery, onSearchChange, onToggleFilters }) => {
-  const [isFocused, setIsFocused] = useState(false)
-
-  const suggestions = [
-    'Pasta', 'Chicken', 'Vegetarian', 'Quick meals', 'Desserts', 'Healthy'
-  ]
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -16,67 +11,50 @@ const SearchBar = ({ searchQuery, onSearchChange, onToggleFilters }) => {
       transition={{ delay: 0.2 }}
       className="relative"
     >
-      <div className="glass-strong rounded-2xl p-6">
-        <div className="relative">
-          <div className="flex items-center space-x-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setTimeout(() => setIsFocused(false), 200)}
-                placeholder="Search recipes, ingredients, or cuisines..."
-                className="w-full pl-12 pr-12 py-4 bg-white/50 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-food-400 focus:border-transparent transition-all placeholder-gray-500"
-              />
-              {searchQuery && (
-                <motion.button
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={() => onSearchChange('')}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gray-400 hover:bg-gray-500 rounded-full flex items-center justify-center transition-colors"
-                >
-                  <X className="w-3 h-3 text-white" />
-                </motion.button>
-              )}
-            </div>
-            
+      <div className="glass rounded-2xl p-6 shadow-xl">
+        <div className="flex items-center space-x-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search for recipes, ingredients, or cuisines..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 bg-white/50 border border-white/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-food-400 focus:border-transparent placeholder-gray-500 text-gray-800 font-medium"
+            />
+            {searchQuery && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2"
+              >
+                <PandaIcon className="w-5 h-5 text-food-500" />
+              </motion.div>
+            )}
+          </div>
+          
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onToggleFilters}
+            className="glass-strong p-4 rounded-xl hover:bg-white/20 transition-colors"
+          >
+            <SlidersHorizontal className="w-5 h-5 text-gray-700" />
+          </motion.button>
+        </div>
+        
+        <div className="mt-4 flex flex-wrap gap-2">
+          {['Italian', 'Quick & Easy', 'Vegetarian', 'Desserts'].map((tag) => (
             <motion.button
+              key={tag}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onToggleFilters}
-              className="gradient-food p-4 rounded-xl text-white hover:shadow-lg transition-shadow"
+              onClick={() => onSearchChange(tag)}
+              className="px-4 py-2 bg-white/30 hover:bg-white/40 rounded-full text-sm font-medium text-gray-700 transition-colors"
             >
-              <Filter className="w-5 h-5" />
+              {tag}
             </motion.button>
-          </div>
-
-          {/* Search Suggestions */}
-          {isFocused && !searchQuery && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="absolute top-full left-0 right-0 mt-2 glass-strong rounded-xl p-4 z-10"
-            >
-              <p className="text-sm text-gray-600 mb-3">Popular searches:</p>
-              <div className="flex flex-wrap gap-2">
-                {suggestions.map((suggestion) => (
-                  <motion.button
-                    key={suggestion}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => onSearchChange(suggestion)}
-                    className="px-3 py-1 bg-white/50 hover:bg-white/70 rounded-full text-sm text-gray-700 transition-colors"
-                  >
-                    {suggestion}
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-          )}
+          ))}
         </div>
       </div>
     </motion.div>

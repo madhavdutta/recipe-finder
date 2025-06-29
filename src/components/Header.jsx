@@ -1,6 +1,7 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { ChefHat, ShoppingCart, Heart } from 'lucide-react'
+import { ShoppingCart, Heart } from 'lucide-react'
+import PandaIcon from './PandaIcon'
 
 const Header = ({ onToggleShoppingList, shoppingCount }) => {
   return (
@@ -15,12 +16,16 @@ const Header = ({ onToggleShoppingList, shoppingCount }) => {
             whileHover={{ scale: 1.05 }}
             className="flex items-center space-x-3"
           >
-            <div className="w-10 h-10 gradient-food rounded-xl flex items-center justify-center">
-              <ChefHat className="w-6 h-6 text-white" />
-            </div>
+            <motion.div
+              whileHover={{ rotate: [0, -10, 10, -10, 0] }}
+              transition={{ duration: 0.5 }}
+              className="w-12 h-12 gradient-food rounded-xl flex items-center justify-center shadow-lg"
+            >
+              <PandaIcon className="w-8 h-8 text-white" color="white" />
+            </motion.div>
             <div>
-              <h1 className="font-display text-2xl font-bold text-gray-800">RecipeFinder</h1>
-              <p className="text-sm text-gray-600">Culinary Adventures Await</p>
+              <h1 className="font-display text-2xl font-bold text-gray-800">RecipePanda</h1>
+              <p className="text-sm text-gray-600">Bamboo-licious Recipes 🎋</p>
             </div>
           </motion.div>
 

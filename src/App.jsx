@@ -7,6 +7,7 @@ import RecipeGrid from './components/RecipeGrid'
 import RecipeModal from './components/RecipeModal'
 import ShoppingList from './components/ShoppingList'
 import CookingMode from './components/CookingMode'
+import PandaIcon from './components/PandaIcon'
 import { mockRecipes } from './data/mockRecipes'
 
 function App() {
@@ -108,6 +109,38 @@ function App() {
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-food-200/30 rounded-full blur-3xl animate-float"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-sage-200/30 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-food-100/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        
+        {/* Floating panda icons */}
+        <motion.div
+          animate={{ 
+            y: [0, -20, 0],
+            rotate: [0, 5, -5, 0]
+          }}
+          transition={{ 
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="absolute top-20 right-20 opacity-10"
+        >
+          <PandaIcon className="w-16 h-16 text-gray-400" />
+        </motion.div>
+        
+        <motion.div
+          animate={{ 
+            y: [0, 15, 0],
+            rotate: [0, -3, 3, 0]
+          }}
+          transition={{ 
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 2
+          }}
+          className="absolute bottom-32 left-16 opacity-10"
+        >
+          <PandaIcon className="w-12 h-12 text-gray-400" />
+        </motion.div>
       </div>
 
       <div className="relative z-10">
@@ -123,14 +156,29 @@ function App() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h1 className="font-display text-5xl md:text-6xl font-bold text-gray-800 mb-4">
-              Discover Amazing
-              <span className="block gradient-food bg-clip-text text-transparent">
-                Recipes
-              </span>
-            </h1>
+            <div className="flex items-center justify-center mb-6">
+              <motion.div
+                animate={{ 
+                  rotate: [0, 10, -10, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <PandaIcon className="w-20 h-20 text-gray-700 mr-4" />
+              </motion.div>
+              <h1 className="font-display text-5xl md:text-6xl font-bold text-gray-800">
+                Discover Amazing
+                <span className="block gradient-food bg-clip-text text-transparent">
+                  Recipes
+                </span>
+              </h1>
+            </div>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Find the perfect recipe for any occasion with our smart search and beautiful collection
+              Join our panda family and find the perfect recipe for any occasion with our smart search and beautiful collection 🐼
             </p>
           </motion.div>
 
@@ -157,6 +205,32 @@ function App() {
             onRecipeClick={setSelectedRecipe}
             onToggleFavorite={toggleFavorite}
           />
+
+          {/* Empty state with panda */}
+          {filteredRecipes.length === 0 && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center py-16"
+            >
+              <motion.div
+                animate={{ 
+                  y: [0, -10, 0],
+                  rotate: [0, 5, -5, 0]
+                }}
+                transition={{ 
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="mb-6"
+              >
+                <PandaIcon className="w-24 h-24 text-gray-400 mx-auto" />
+              </motion.div>
+              <h3 className="text-2xl font-bold text-gray-700 mb-2">No recipes found!</h3>
+              <p className="text-gray-600">This panda couldn't find any matching recipes. Try adjusting your search or filters.</p>
+            </motion.div>
+          )}
         </main>
 
         {/* Recipe Modal */}
