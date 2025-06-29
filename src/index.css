@@ -1,23 +1,31 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @layer base {
   body {
-    @apply bg-gradient-to-br from-orange-50 to-amber-50 font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .font-display {
+    font-family: 'Playfair Display', serif;
   }
 }
 
 @layer components {
-  .glass-effect {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20;
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
   }
   
-  .recipe-card {
-    @apply glass-effect rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300;
+  .glass-strong {
+    @apply bg-white/20 backdrop-blur-lg border border-white/30;
   }
   
-  .search-input {
-    @apply w-full px-6 py-4 text-lg rounded-2xl glass-effect border-2 border-transparent focus:border-primary-300 focus:outline-none transition-all duration-300;
+  .gradient-food {
+    background: linear-gradient(135deg, #f59532 0%, #e35d05 100%);
+  }
+  
+  .gradient-sage {
+    background: linear-gradient(135deg, #7d8f7d 0%, #4d5c4d 100%);
   }
 }

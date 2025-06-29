@@ -2,23 +2,33 @@ import React from 'react'
 import { motion } from 'framer-motion'
 import { Clock, Users, Heart, Star } from 'lucide-react'
 
-const RecipeCard = ({ recipe, index, isFavorite, onToggleFavorite, onClick }) => {
+const RecipeCard = ({ recipe, isFavorite, onClick, onToggleFavorite }) => {
+  const getDifficultyColor = (difficulty) => {
+    switch (difficulty) {
+      case 'Easy': return 'text-green-600 bg-green-100'
+      case 'Medium': return 'text-yellow-600 bg-yellow-100'
+      case 'Hard': return 'text-red-600 bg-red-100'
+      default: return 'text-gray-600 bg-gray-100'
+    }
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.6 }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      className="recipe-card cursor-pointer group"
+      whileHover={{ y: -5, scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className="glass-strong rounded-2xl overflow-hidden cursor-pointer group"
       onClick={onClick}
     >
       <div className="relative overflow-hidden">
-        <motion.img
+        <img
           src={recipe.image}
-          alt={recipe.name}
+          alt={recipe.title}
           className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-          whileHover={{ scale: 1.1 }}
+          loading="lazy"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* Favorite Button */}
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -26,51 +36,59 @@ const RecipeCard = ({ recipe, index, isFavorite, onToggleFavorite, onClick }) =>
             e.stopPropagation()
             onToggleFavorite()
           }}
-          className={`absolute top-4 right-4 p-2 rounded-full backdrop-blur-sm transition-all duration-300 ${
-            isFavorite 
-              ? 'bg-red-500 text-white' 
-              : 'bg-white/80 text-gray-600 hover:bg-red-500 hover:text-white'
+          className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+            isFavorite
+              ? 'bg-red-500 text-white'
+              : 'bg-white/80 text-gray-600 hover:bg-white'
           }`}
         >
-          <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current' : ''}`} />
+          <Heart className={`w-4 h-4 ${isFavorite ? 'fill-current' : ''}`} />
         </motion.button>
-        
-        <div className="absolute bottom-4 left-4 flex items-center space-x-2">
-          <div className="flex items-center space-x-1 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1">
-            <Star className="w-4 h-4 text-yellow-400 fill-current" />
-            <span className="text-white text-sm font-medium">{recipe.rating}</span>
-          </div>
+
+        {/* Difficulty Badge */}
+        <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(recipe.difficulty)}`}>
+          {recipe.difficulty}
         </div>
       </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-primary-600 transition-colors">
-          {recipe.name}
+
+      <div className="p-4">
+        <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2 group-hover:text-food-600 transition-colors">
+          {recipe.title}
         </h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        
+        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
           {recipe.description}
         </p>
-        
-        <div className="flex items-center justify-between text-sm text-gray-500">
+
+        <div className="flex items-center justify-between text-sm text-gray-500 mb-3">
           <div className="flex items-center space-x-1">
             <Clock className="w-4 h-4" />
-            <span>{recipe.cookTime}</span>
+            <span>{recipe.cookTime} min</span>
           </div>
           <div className="flex items-center space-x-1">
             <Users className="w-4 h-4" />
-            <span>{recipe.servings} servings</span>
+            <span>{recipe.servings}</span>
+          </div>
+          <div className="flex items-center space-x-1">
+            <Star className="w-4 h-4 fill-current text-yellow-400" />
+            <span>{recipe.rating}</span>
           </div>
         </div>
-        
-        <div className="mt-4 flex flex-wrap gap-2">
-          {recipe.tags.slice(0, 3).map((tag) => (
+
+        <div className="flex flex-wrap gap-1">
+          {recipe.diet.slice(0, 2).map((tag) => (
             <span
               key={tag}
-              className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium"
+              className="px-2 py-1 bg-sage-100 text-sage-700 text-xs rounded-full"
             >
               {tag}
             </span>
           ))}
+          {recipe.diet.length > 2 && (
+            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
+              +{recipe.diet.length - 2}
+            </span>
+          )}
         </div>
       </div>
     </motion.div>
